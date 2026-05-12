@@ -37,12 +37,12 @@ def current_weather(lat, lon):
     result = {
         'city': data['location']['name'],  # Город
         'time': data['current']['last_updated'],  # Время обновления данных
-        'temp': data['current']['temp_c'],  # TODO Реализовать вычисление температуры из данных полученных от API
-        'feels_like_temp': data['current']['feelslike_c'],  # TODO Реализовать вычисление ощущаемой температуры из данных полученных от API
-        'pressure': data['current']['pressure_mb'],  # TODO Реализовать вычисление давления из данных полученных от API
-        'humidity': data['current']['humidity'],  # TODO Реализовать вычисление влажности из данных полученных от API
-        'wind_speed': data['current']['wind_kph'],  # TODO Реализовать вычисление скорости ветра из данных полученных от API
-        'wind_gust': data['current']['gust_kph'],  # TODO Реализовать вычисление скорости порывов ветка из данных полученных от API
+        'temp': data['current']['temp_c'],  # Температура
+        'feels_like_temp': data['current']['feelslike_c'],  # Ощущаемая температура
+        'pressure': data['current']['pressure_mb'],  # Давление
+        'humidity': data['current']['humidity'],  # Влажность
+        'wind_speed': data['current']['wind_kph'],  # Скорость ветра
+        'wind_gust': data['current']['gust_kph'],  # Порывы ветра
         'wind_dir': DIRECTION_TRANSFORM.get(data['current']['wind_dir'].lower()),  # Направление ветра
     }
     return result
