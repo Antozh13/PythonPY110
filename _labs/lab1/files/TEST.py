@@ -1,1 +1,0 @@
-curl -H "X-Yandex-API-Key: 1f9354cf-f818-4283-8f16-24877dcdab95" "https://api.weather.yandex.ru/v2/forecast?lat=59.93&lon=30.31"

@@ -1,0 +1,140 @@
+{% extends 'app_store/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Корзина</title>
+{% endblock %}
+
+{% block content %}
+    <div class="hero-wrap hero-bread" style="background-image: url({% static 'app_store/images/bg_1.jpg' %});">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+          	<p class="breadcrumbs"><span class="mr-2"></span></p>
+            <h1 class="mb-0 bread">Корзина</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section ftco-cart">
+			<div class="container">
+				<div class="row">
+    			<div class="col-md-12 ftco-animate">
+    				<div class="cart-list">
+	    				<table class="table">
+						    <thead class="thead-primary">
+						      <tr class="text-center">
+						        <th>&nbsp;</th>
+						        <th>&nbsp;</th>
+						        <th>Продукт</th>
+						        <th>Цена, &#x20bd</th>
+						        <th>Количество товара</th>
+						        <th>Общая цена, &#x20bd</th>
+						      </tr>
+						    </thead>
+						    <tbody>
+                              {% for product in products %}
+						      <tr class="text-center">
+						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+						        
+						        <td class="image-prod"><div class="img" style="background-image:url({% static product.url %});"></div></td>
+						        
+						        <td class="product-name">
+						        	<h3>{{product.name}}</h3>
+						        	<p>{{product.description}}</p>
+						        </td>
+						        
+						        <td class="price">{{product.price_after}}.00</td>
+						        
+						        <td class="quantity">
+						        	<div class="input-group mb-3">
+					             	<input type="number" name="quantity" class="quantity form-control input-number" value={{product.quantity}} min="1" max="100">
+					          	</div>
+					          </td>
+						        
+						        <td class="total">{{product.price_total}}.00</td>
+						      </tr><!-- END TR-->
+                              {% endfor %}
+
+						    </tbody>
+						  </table>
+					  </div>
+    			</div>
+    		</div>
+    		<div class="row justify-content-end">
+    			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+    				<div class="cart-total mb-3">
+    					<h3>Промокод</h3>
+    					<p>Введите код купона, если он у вас есть</p>
+  						<form action="#" class="info">
+						  <div class="form-group">
+							<input type="text" id='promo-input' class="form-control text-left px-3" placeholder="Промокод">
+						  </div>
+						</form>
+    				</div>
+    				<p><button id="checkCoupon" class="btn btn-primary py-3 px-4">Применить промокод</button></p>
+					<div id="couponResult"></div>
+    			</div>
+    			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+    				<div class="cart-total mb-3">
+    					<h3>Расчёт доставки</h3>
+    					<p>Введите ваш город доставки</p>
+  						<form action="#" class="info">
+						  <div class="form-group">
+							<label>Страна</label>
+							<input type="text" id='delivery-country' class="form-control text-left px-3" placeholder="Россия" required>
+						  </div>
+						  <div class="form-group">
+							<label>Город/Населенный пункт</label>
+							<input type="text" id='delivery-city' class="form-control text-left px-3" placeholder="Санкт-Петербург" required>
+						  </div>
+						  <div class="form-group">
+							<label>Почтовый код</label>
+							<input type="text" id='delivery-post-code' class="form-control text-left px-3" placeholder="195251" required>
+						  </div>
+
+						</form>
+    				</div>
+						<p><button id="estimateDelivery" class="btn btn-primary py-3 px-4">Рассчитать</button></p>
+						<div id="estimateResult"></div>
+    			</div>
+    			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+    				<div class="cart-total mb-3">
+    					<h3>Стоимость покупку</h3>
+    					<p class="d-flex">
+    						<span>Промежуточный итог</span>
+    						&#x20bd  <span id="subtotal-value">710.00</span>
+    					</p>
+    					<p class="d-flex">
+    						<span>Доставка</span>
+    						&#x20bd <span id="delivery-value">0.00</span>
+    					</p>
+    					<p class="d-flex">
+    						<span>Скидки</span>
+    						&#x20bd <span id="discount-value">0.00</span>
+    					</p>
+    					<hr>
+    					<p class="d-flex total-price">
+    						<span>Итог</span>
+    						<b style="color: black">&#x20bd</b> <span id="total-value">710.00</span>
+    					</p>
+    				</div>
+    				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Оплатить</a></p>
+    			</div>
+    		</div>
+			</div>
+		</section>
+{% endblock %}
+
+{% block custom_scripts %}
+	<!-- Блок дополнительных пользовательских скриптов-->
+	<!-- Функция обновления итоговой суммы у корзины с учетом доставки и купонов-->
+	<script src="{% static 'app_store/js/appUpdateSubtotal.js' %}"></script>
+	<!-- Функция обновления суммы покупки товара при увеличении числа товара в заказе-->
+	<script src="{% static 'app_store/js/appUpdateTotal.js' %}"></script>
+	<!-- Функция проверки валидности купона при отправке запроса на адрес /coupon/check/-->
+	<script src="{% static 'app_store/js/appCheckCoupon.js' %}"></script>
+	<!-- Функция расчета стоимости доставки при отправке запроса на адрес /delivery/estimate с параметрами country, city, code-->
+	<script src="{% static 'app_store/js/appEstimateDelivery.js' %}"></script>
+{% endblock %}

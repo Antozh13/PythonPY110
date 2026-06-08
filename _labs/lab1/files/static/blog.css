@@ -1,6 +1,6 @@
 /* Стили для заголовка и навигации в хедере */
 header {
-    background-color: #333;
+    background-color: #2c3e50;
     color: #fff;
     text-align: center;
     padding: 20px 0;
@@ -72,7 +72,7 @@ aside ul li {
 
 /* Стили для футера */
 footer {
-    background-color: #333;
+    background-color: #e74c3c;
     color: #fff;
     text-align: center;
     padding: 10px 0;

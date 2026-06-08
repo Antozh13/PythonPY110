@@ -1,0 +1,103 @@
+{% extends 'app_store/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Интернет-магазин здоровых продуктов</title>
+{% endblock %}
+
+{% block content %}
+    <div class="hero-wrap hero-bread" style="background-image: url({% static 'app_store/images/bg_1.jpg' %});">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+          	<p class="breadcrumbs"><span class="mr-2"></span></p>
+            <h1 class="mb-0 bread">Продукты</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section">
+    	<div class="container">
+    		<div class="row justify-content-center">
+    			<div class="col-md-10 mb-5 text-center">
+    				<ul class="product-category">
+    					<li><a href="#" class="active">Все</a></li>
+    					<li><a href="#">Овощи</a></li>
+    					<li><a href="#">Фрукты</a></li>
+    					<li><a href="#">Соки</a></li>
+    					<li><a href="#">Семена</a></li>
+    				</ul>
+    			</div>
+    		</div>
+    		<div class="row">
+                {% for product in products %}
+    			<div class="col-md-6 col-lg-3 ftco-animate">
+    				<div class="product">
+    					<a href="{% url 'app_store:product_page_view' product.html %}" class="img-prod">
+							<img class="img-fluid" src="{% static product.url %}" alt="Colorlib Template">
+                            {% if product.discount %}
+    						<span class="status">{{product.discount}}%</span>
+                            {% else %}
+    						<div class="overlay"></div>
+                            {% endif %}
+    					</a>
+    					<div class="text py-3 pb-4 px-3 text-center">
+    						<h3><a href="#">{{product.name}}</a></h3>
+    						<div class="d-flex">
+    							<div class="pricing">
+		    						<p class="price">
+                                        {% if product.discount %}
+										<span class="mr-2 price-dc">&#x20bd {{product.price_before}}</span>
+										<span class="price-sale">&#x20bd {{product.price_after}}</span>
+                                        {% else %}
+                                        <span>&#x20bd {{product.price_before}}</span>
+                                        {% endif %}
+									</p>
+		    					</div>
+	    					</div>
+	    					<div class="bottom-area d-flex px-3">
+	    						<div class="m-auto d-flex">
+	    							<a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center" data-product-id="1">
+	    								<span><i class="ion-ios-add-circle-outline" data-product-id="1"></i></span>
+	    							</a>
+	    							<a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+	    								<span><i class="ion-ios-cart"></i></span>
+	    							</a>
+	    							<a href="#" class="heart d-flex justify-content-center align-items-center ">
+	    								<span><i class="ion-ios-heart-empty" data-product-id="1" data-state="inactive" data-action="toggle"></i></span>
+	    							</a>
+    							</div>
+								<div class="custom-popup-message" data-product-id="1"></div>
+    						</div>
+    					</div>
+    				</div>
+    			</div>
+                {% endfor %}
+    		</div>
+    		<div class="row mt-5">
+          <div class="col text-center">
+            <div class="block-27">
+              <ul>
+                <li><a href="#">&lt;</a></li>
+                <li class="active"><span>1</span></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&gt;</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    	</div>
+    </section>
+{% endblock %}
+
+{% block custom_scripts %}
+	<!-- Блок дополнительных пользовательских скриптов-->
+	<!-- Функциональность добавления в корзину товара по нажатию на кнопку (должен быть реализован адрес /cart/add/) -->
+  	<script src="/{% static 'app_store/js/appAddToCard.js' %}"></script>
+	<!-- Функциональность добавления в избранное товара по нажатию на кнопку (должен быть реализован адрес /wishlist/add/) -->
+  	<script src="/{% static 'app_store/js/appAddToWishlist.js' %}"></script>
+{% endblock %}
