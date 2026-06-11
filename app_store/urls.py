@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import product_view_json, shop_view, product_page_view
 from .views import cart_view_json, cart_add_view_json, cart_del_view_json, cart_view
+from .views import coupon_check_view, delivery_estimate_view
 
 app_name = 'app_store'
 
@@ -13,5 +14,7 @@ urlpatterns = [
     path('cart/add/<id_product>', cart_add_view_json),
     path('cart/del/<id_product>', cart_del_view_json),
     path('cart/', cart_view, name='cart_view'),
+    path('coupon/check/<slug:name_coupon>', coupon_check_view, name='coupon_check'),
+    path('delivery/estimate', delivery_estimate_view)
 ]
 
