@@ -3,6 +3,9 @@ from django.http import HttpResponse, JsonResponse, HttpResponseNotFound
 from .models import DATABASE
 from logic.services import filtering_category
 from logic.control_cart import view_in_cart, add_to_cart, remove_from_cart
+from django.shortcuts import redirect
+from django.contrib.auth import get_user
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -74,17 +77,19 @@ def product_page_view(request, page):
 
 
 
+@login_required(login_url='app_login:login_view')
 def cart_view_json(request):
     if request.method == "GET":
-        username = ''
+        username = get_user(request).username
         data = view_in_cart(username)
         return JsonResponse(data, json_dumps_params={'ensure_ascii': False,
                                                      'indent': 4})
 
 
+@login_required(login_url='app_login:login_view')
 def cart_add_view_json(request, id_product):
     if request.method == "GET":
-        username = ''
+        username = get_user(request).username
         result = add_to_cart(id_product, username)
         if result:
             return JsonResponse({"answer": "Продукт успешно добавлен в корзину"},
@@ -95,9 +100,10 @@ def cart_add_view_json(request, id_product):
                             json_dumps_params={'ensure_ascii': False})
 
 
+@login_required(login_url='app_login:login_view')
 def cart_del_view_json(request, id_product):
     if request.method == "GET":
-        username = ''
+        username = get_user(request).username
         result = remove_from_cart(id_product, username)
         if result:
             return JsonResponse({"answer": "Продукт успешно удалён из корзины"},
@@ -108,9 +114,10 @@ def cart_del_view_json(request, id_product):
                             json_dumps_params={'ensure_ascii': False})
 
 
+@login_required(login_url='app_login:login_view')
 def cart_view(request):
     if request.method == "GET":
-        username = ''
+        username = get_user(request).username
         data = view_in_cart(username)[username]
 
         products = []
@@ -173,9 +180,28 @@ def delivery_estimate_view(request):
 
         return HttpResponseNotFound("Неверные данные")
 
-        # TODO Реализуйте логику расчёта стоимости доставки, которая выполняет следующее:
-        # Если в базе c есть и страна (country) и существует город(city), то вернуть JsonResponse со словарём,
-        # {"price": значение стоимости доставки}
-        # Если в базе DATA_PRICE есть страна, но нет города, то вернуть JsonResponse со словарём,
-        # {"price": значение фиксированной стоимости доставки}
-        # Если нет страны, то вернуть HttpResponseNotFound("Неверные данные")
+
+
+
+@login_required(login_url='app_login:login_view')
+def cart_buy_now_view(request, id_product):
+    if request.method == "GET":
+        username = get_user(request).username
+        result = add_to_cart(id_product, username)
+        if result:
+            return redirect("app_store:cart_view")
+
+        return HttpResponseNotFound("Неудачное добавление в корзину")
+
+
+
+
+@login_required(login_url='app_login:login_view')
+def cart_remove_view(request, id_product):
+    if request.method == "GET":
+        username = get_user(request).username
+        result = remove_from_cart(request, id_product)  # TODO Вызвать функцию удаления из корзины
+        if result:
+            return redirect("cart_detail")  # TODO Вернуть перенаправление на корзину
+
+        return HttpResponseNotFound("Неудачное удаление из корзины")
